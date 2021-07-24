@@ -22,6 +22,43 @@ def insert(root, key):
             root.left = insert(root.left, key)
     return root
 
+def min_value_node(node):
+    current = node
+    while current.left != None:
+        current = current.left
+    return current
+
+def delete(root, key):
+    if root is None:
+        return root
+
+    if key < root.value:
+        root.left = delete(root.left, key)
+
+    elif key > root.value:
+        root.right = delete(root.right, key)
+
+    #reached the node to be deleted
+    else:
+
+        #if node to be deleted has one or zero child
+        if root.left is None:
+            temp = root.right
+            root = None
+            return temp
+        
+        elif root.right is None:
+            temp = root.left
+            root = None
+            return temp
+
+        #for node having 2 children
+        temp = min_value_node(root.right)
+        root.value = temp.value
+        root.right = delete(root.right, temp.value)
+    return root
+
+
 bst = Node(1)
 bst = insert(bst, 7)
 bst = insert(bst, 4)
@@ -31,5 +68,8 @@ bst = insert(bst, 2)
 bst = insert(bst, 9)
 bst = insert(bst, 8)
 bst = insert(bst, 5)
+inorder(bst)
+print()
+delete(bst, 4)
 inorder(bst)
 
